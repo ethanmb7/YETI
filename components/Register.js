@@ -1,21 +1,29 @@
-// src/components/Register.js
+// src/components/Login.js
 import React, { useState } from 'react';
 import authService from '../services/authService';
 
-const Register = () => {
-    const [username, setUsername] = useState('');
+const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [bio, setBio] = useState('');
 
-    const handleRegister = async () => {
+    const handleLogin = async () => {
         try {
-            await authService.register(username, email, password, bio);
-            alert('Inscription réussie !');
+            const response = await authService.login(email, password);
+            localStorage.setItem('token', response.data.token);
+            alert('Connexion réussie !');
         } catch (err) {
             console.error(err);
         }
     };
 
     return (
-        <div
+        <div>
+            <h2>Connexion</h2>
+            <input type="email" placeholder="Email" onChange={(e) => setEmail(e.target.value)} />
+            <input type="password" placeholder="Mot de passe" onChange={(e) => setPassword(e.target.value)} />
+            <button onClick={handleLogin}>Se connecter</button>
+        </div>
+    );
+};
+
+export default Login;
